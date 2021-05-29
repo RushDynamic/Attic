@@ -1,0 +1,22 @@
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Typography, AppBar, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, Container } from "@material-ui/core";
+import About from "./About.jsx";
+import Contact from "./Contact.jsx";
+import Navigation from "./Navigation.jsx";
+
+function App() {
+    return (
+        <Router>
+            <div className="App">
+                <Typography variant="h1">Hello, World!</Typography>
+                <Switch>
+                    <Route path="/about" component={About} />
+                    <Route path="/contact" component={Contact} />
+                </Switch>
+            </div>
+        </Router>
+    );
+}
+
+export default App;
