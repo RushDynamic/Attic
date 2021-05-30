@@ -1,44 +1,68 @@
-import React from 'react';
-import { Card, CardContent, CardHeader, CardActions, IconButton, Typography, TextField } from '@material-ui/core';
-import { DeleteOutlined, EditOutlined } from '@material-ui/icons';
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardActions, IconButton, Typography, TextField, Collapse } from '@material-ui/core';
+import { DeleteOutlined, EditOutlined, CloseOutlined, DoneOutlined } from '@material-ui/icons';
 import useStyles from "../styles.js";
 
 function StorageCard(props) {
     const classes = useStyles();
+    const [editTitle, setEditTitle] = useState(false);
+
     return (
         <div>
             <Card elevation={3}>
-                <CardHeader
-                    title={
-                        props.jsonData.first_name + " " + props.jsonData.last_name
-                    }
-                    subheader={
-                        props.jsonData.ip_address
-                    }
-                // action={
-                //     <IconButton onClick={() => props.handleDeleteStorage(props)}>
-                //         <DeleteOutlined />
-                //     </IconButton>
-                // }
-                />
-                <CardContent>
+                <Collapse in={!editTitle}>
+                    <CardHeader
+                        title={
+                            props.jsonData.first_name + " " + props.jsonData.last_name
+                        }
+                        subheader={
+                            props.jsonData.ip_address
+                        }
+                    // action={
+                    //     <IconButton onClick={() => props.handleDeleteStorage(props)}>
+                    //         <DeleteOutlined />
+                    //     </IconButton>
+                    // }
+                    />
+                </Collapse>
+                <Collapse in={editTitle}>
+                    <CardHeader
+                        title={
+                            <TextField value={props.jsonData.first_name + " " + props.jsonData.last_name} />
+                        }
+                    />
+                </Collapse>
+                < CardContent >
                     <Typography variant="body2" color="textSecondary">
-                        {props.jsonData.email}
+                        {props.jsonData.text}
                     </Typography>
                 </CardContent>
-
-                <CardActions>
-                    <div className={classes.actions_container}>
-                        <IconButton>
-                            <EditOutlined />
-                        </IconButton>
-                        <IconButton onClick={() => props.handleDeleteStorage(props)}>
-                            <DeleteOutlined />
-                        </IconButton>
-                    </div>
-                </CardActions>
+                <Collapse in={!editTitle}>
+                    <CardActions>
+                        <div className={classes.actions_container}>
+                            <IconButton onClick={() => setEditTitle(!editTitle)}>
+                                <EditOutlined />
+                            </IconButton>
+                            <IconButton onClick={() => props.handleDeleteStorage(props)}>
+                                <DeleteOutlined />
+                            </IconButton>
+                        </div>
+                    </CardActions>
+                </Collapse>
+                <Collapse in={editTitle}>
+                    <CardActions>
+                        <div className={classes.actions_container}>
+                            <IconButton onClick={() => setEditTitle(!editTitle)}>
+                                <DoneOutlined />
+                            </IconButton>
+                            <IconButton>
+                                <CloseOutlined />
+                            </IconButton>
+                        </div>
+                    </CardActions>
+                </Collapse>
             </Card>
-        </div>
+        </div >
     );
 }
 
