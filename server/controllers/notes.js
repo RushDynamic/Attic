@@ -1,11 +1,7 @@
-import { createRequire } from 'module';
 import { Note } from '../models/notes.js';
 import faker from 'faker';
-const require = createRequire(import.meta.url);
-const mock_data = require('../public/MOCK_DATA.json');
 
 export function getNotes(req, res) {
-    //res.json(mock_data);
     Note.find()
         .then((result) => {
             res.send(result);
@@ -20,7 +16,7 @@ export function addNote(req, res) {
         id: faker.datatype.uuid(),
         first_name: faker.name.firstName(),
         last_name: faker.name.lastName(),
-        email: faker.internet.email(),
+        text: faker.lorem.paragraph(),
         gender: faker.name.gender(),
         ip_address: faker.internet.ip()
     });
