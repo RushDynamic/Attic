@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardActions, IconButton, Typography, TextField, Collapse } from '@material-ui/core';
 import { DeleteOutlined, EditOutlined, CloseOutlined, DoneOutlined } from '@material-ui/icons';
 import useStyles from "../styles.js";
@@ -7,6 +7,10 @@ function StorageCard(props) {
     const classes = useStyles();
     const [editTitle, setEditTitle] = useState(false);
     const [postTitle, setPostTitle] = useState(props.jsonData.name);
+
+    useEffect(() => {
+        setPostTitle(props.jsonData.name)
+    }, [props.jsonData.name])
 
     return (
         <div>
@@ -33,7 +37,7 @@ function StorageCard(props) {
                         }
                     />
                 </Collapse>
-                < CardContent >
+                <CardContent>
                     <Typography variant="body2" color="textSecondary">
                         {props.jsonData.text}
                     </Typography>
@@ -41,10 +45,7 @@ function StorageCard(props) {
                 <Collapse in={!editTitle}>
                     <CardActions>
                         <div className={classes.actions_container}>
-                            <IconButton onClick={() => {
-                                setEditTitle(!editTitle);
-
-                            }}>
+                            <IconButton onClick={() => setEditTitle(!editTitle)}>
                                 <EditOutlined />
                             </IconButton>
                             <IconButton onClick={() => props.handleDeleteStorage(props.jsonData._id)}>
