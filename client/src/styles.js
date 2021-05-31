@@ -42,6 +42,25 @@ const useStyles = makeStyles((theme) => ({
         width: '100vh',
         display: 'flex',
         justifyContent: 'flex-end'
+    },
+
+    notes_default_container: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: '5vh',
+        width: '100vh'
+    },
+
+    // Loading data
+    loading_container: {
+        marginTop: '10vh',
+        width: '20vh'
+    },
+    progressBarColorPrimary: {
+        backgroundColor: 'grey',
+    },
+    progressBarProgressColorPrimary: {
+        backgroundColor: 'black',
     }
 }));
 
