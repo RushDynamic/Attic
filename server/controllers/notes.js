@@ -2,6 +2,7 @@ import { Note } from '../models/notes.js';
 import faker from 'faker';
 
 export function getNotes(req, res) {
+    //const sleep = () => new Promise(resolve => setTimeout(resolve, 3000));
     Note.find()
         .then((result) => {
             res.send(result);
@@ -41,7 +42,10 @@ export function updateNote(req, res) {
     Note.findOneAndUpdate({
         _id: req.body.id
     },
-        { name: req.body.title },
+        {
+            name: req.body.title,
+            text: req.body.text
+        },
         { useFindAndModify: false })
         .catch((err) => { console.log(err) });
     console.log("Updated record");

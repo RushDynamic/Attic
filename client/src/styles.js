@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     // Loading data
     loading_container: {
         marginTop: '10vh',
-        width: '20vh'
+        width: '50vh'
     },
     progressBarColorPrimary: {
         backgroundColor: 'grey',

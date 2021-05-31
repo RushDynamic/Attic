@@ -5,20 +5,20 @@ import useStyles from "../styles.js";
 
 function StorageCard(props) {
     const classes = useStyles();
-    const [editTitle, setEditTitle] = useState(false);
-    const [postTitle, setPostTitle] = useState(props.jsonData.name);
-
+    const [editCard, setEditCard] = useState(false);
+    const [currentData, setCurrentData] = useState({ title: props.jsonData.name, text: props.jsonData.text })
+    const [storedData, setStoredData] = useState({ title: props.jsonData.name, text: props.jsonData.text });
     useEffect(() => {
-        setPostTitle(props.jsonData.name)
+        setCurrentData({ title: props.jsonData.name, text: props.jsonData.text });
     }, [props.jsonData.name])
 
     return (
         <div>
             <Card elevation={3}>
-                <Collapse in={!editTitle}>
+                <Collapse in={!editCard}>
                     <CardHeader
                         title={
-                            postTitle
+                            currentData.title
                         }
                         subheader={
                             props.jsonData.ip_address
@@ -29,23 +29,27 @@ function StorageCard(props) {
                     //     </IconButton>
                     // }
                     />
+                    <CardContent>
+                        <Typography variant="body1" color="textSecondary">
+                            {currentData.text}
+                        </Typography>
+                    </CardContent>
                 </Collapse>
-                <Collapse in={editTitle}>
+                <Collapse in={editCard}>
                     <CardHeader
                         title={
-                            <TextField value={postTitle} onChange={event => setPostTitle(event.target.value)} />
+                            <TextField value={currentData.title} fullWidth={true} onChange={event => setCurrentData({ title: event.target.value, text: currentData.text })} />
                         }
                     />
+                    <CardContent>
+                        <TextField value={currentData.text} multiline rowsMax={6} fullWidth={true} onChange={event => setCurrentData({ title: currentData.title, text: event.target.value })} />
+                    </CardContent>
                 </Collapse>
-                <CardContent>
-                    <Typography variant="body2" color="textSecondary">
-                        {props.jsonData.text}
-                    </Typography>
-                </CardContent>
-                <Collapse in={!editTitle}>
+
+                <Collapse in={!editCard}>
                     <CardActions>
                         <div className={classes.actions_container}>
-                            <IconButton onClick={() => setEditTitle(!editTitle)}>
+                            <IconButton onClick={() => setEditCard(!editCard)}>
                                 <EditOutlined />
                             </IconButton>
                             <IconButton onClick={() => props.handleDeleteStorage(props.jsonData._id)}>
@@ -54,16 +58,20 @@ function StorageCard(props) {
                         </div>
                     </CardActions>
                 </Collapse>
-                <Collapse in={editTitle}>
+                <Collapse in={editCard}>
                     <CardActions>
                         <div className={classes.actions_container}>
                             <IconButton onClick={() => {
-                                setEditTitle(!editTitle);
-                                props.handleUpdateStorage(props.jsonData._id, postTitle);
+                                setEditCard(!editCard);
+                                props.handleUpdateStorage(props.jsonData._id, currentData);
+                                setStoredData({ title: currentData.title, text: currentData.text });
                             }}>
                                 <DoneOutlined />
                             </IconButton>
-                            <IconButton>
+                            <IconButton onClick={() => {
+                                setEditCard(!editCard);
+                                setCurrentData({ title: storedData.title, text: storedData.text })
+                            }}>
                                 <CloseOutlined />
                             </IconButton>
                         </div>

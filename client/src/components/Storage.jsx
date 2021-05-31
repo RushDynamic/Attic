@@ -18,24 +18,25 @@ function Storage() {
             });
     }, []);
 
-    function handleDeleteStorage(id) {
-        fetch("http://localhost:3001/storage/delete/" + id, {
+    function handleDeleteStorage(_id) {
+        fetch("http://localhost:3001/storage/delete/" + _id, {
             method: 'GET'
         }).then(() => {
             console.log("Finished delete request");
-            const filteredSampleData = sampleData.filter(data => data._id !== id);
+            const filteredSampleData = sampleData.filter(data => data._id !== _id);
             console.log(filteredSampleData);
             setSampleData(filteredSampleData);
         });
     }
 
-    function handleUpdateStorage(_id, _title) {
+    function handleUpdateStorage(_id, _newData) {
         fetch("http://localhost:3001/storage/update", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 id: _id,
-                title: _title
+                title: _newData.title,
+                text: _newData.text
             })
         }).then(() => {
             console.log("Finished update request");
