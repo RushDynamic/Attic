@@ -5,22 +5,24 @@ import useStyles from "../styles.js"
 import Header from "./Header.jsx";
 import Login from "./Login.jsx";
 import Register from "./Register.jsx";
-import Storage from "./Storage.jsx"
+import Storage from "./Storage.jsx";
+import Footer from "./Footer.jsx";
 
 function App() {
 
-  //const classes = useStyles();
-  const cards = [1, 2, 3, 4, 5, 6];
-
+  const classes = useStyles();
   return (
     <>
       <Router>
         <CssBaseline />
-        <Header />
-        <Switch>
-          <Route path="/" exact component={Storage} />
-          <Route path="/register" component={Register} />
-        </Switch>
+        <div className={classes.mainContainer}>
+          <Header />
+          <Switch>
+            <Route path="/" exact component={Storage} />
+            <Route path="/register" component={Register} />
+          </Switch>
+          <Footer />
+        </div>
       </Router>
     </>
   );

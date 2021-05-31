@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: '5vh'
     },
     header_logo: {
-        height: '30vh'
+        height: '20vh'
     },
 
     // Card Properties
@@ -61,6 +61,28 @@ const useStyles = makeStyles((theme) => ({
     },
     progressBarProgressColorPrimary: {
         backgroundColor: 'black',
+    },
+
+    // Added to anchor footer at the bottom
+    mainContainer: {
+        display: 'flex',
+        minHeight: '100vh',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+    },
+
+    footerContainer: {
+        textAlign: 'center',
+        marginTop: '5vh',
+        backgroundColor: 'grey',
+        minHeight: '5vh'
+    },
+    footerText: {
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        padding: '2vh',
+        color: 'white'
     }
 }));
 
