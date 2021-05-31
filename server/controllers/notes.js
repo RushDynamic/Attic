@@ -14,8 +14,7 @@ export function addNote(req, res) {
     faker.seed(new Date().getTime())
     const note = new Note({
         id: faker.datatype.uuid(),
-        first_name: faker.name.firstName(),
-        last_name: faker.name.lastName(),
+        name: faker.name.findName(),
         text: faker.lorem.paragraph(),
         gender: faker.name.gender(),
         ip_address: faker.internet.ip()
@@ -36,4 +35,15 @@ export function deleteNote(req, res) {
             res.send("Deleted note " + id);
         })
         .catch((err) => console.log(err));
+}
+
+export function updateNote(req, res) {
+    Note.findOneAndUpdate({
+        _id: req.body.id
+    },
+        { name: req.body.title },
+        { useFindAndModify: false })
+        .catch((err) => { console.log(err) });
+    console.log("Updated record");
+    res.send(req.body.title);
 }

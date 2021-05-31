@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import notesRoutes from './routes/notes.js';
+import bodyParser from 'body-parser';
 
 const app = express();
 
@@ -19,5 +20,6 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
     next();
 });
-
+// app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 app.use('/storage', notesRoutes);
