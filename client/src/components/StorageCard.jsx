@@ -6,6 +6,7 @@ import useStyles from "../styles.js";
 function StorageCard(props) {
     const classes = useStyles();
     const [editTitle, setEditTitle] = useState(false);
+    const [postTitle, setPostTitle] = useState(props.jsonData.name);
 
     return (
         <div>
@@ -13,7 +14,7 @@ function StorageCard(props) {
                 <Collapse in={!editTitle}>
                     <CardHeader
                         title={
-                            props.jsonData.first_name + " " + props.jsonData.last_name
+                            postTitle
                         }
                         subheader={
                             props.jsonData.ip_address
@@ -28,7 +29,7 @@ function StorageCard(props) {
                 <Collapse in={editTitle}>
                     <CardHeader
                         title={
-                            <TextField value={props.jsonData.first_name + " " + props.jsonData.last_name} />
+                            <TextField value={postTitle} onChange={event => setPostTitle(event.target.value)} />
                         }
                     />
                 </Collapse>
@@ -40,7 +41,10 @@ function StorageCard(props) {
                 <Collapse in={!editTitle}>
                     <CardActions>
                         <div className={classes.actions_container}>
-                            <IconButton onClick={() => setEditTitle(!editTitle)}>
+                            <IconButton onClick={() => {
+                                setEditTitle(!editTitle);
+
+                            }}>
                                 <EditOutlined />
                             </IconButton>
                             <IconButton onClick={() => props.handleDeleteStorage(props.jsonData._id)}>
@@ -52,7 +56,10 @@ function StorageCard(props) {
                 <Collapse in={editTitle}>
                     <CardActions>
                         <div className={classes.actions_container}>
-                            <IconButton onClick={() => setEditTitle(!editTitle)}>
+                            <IconButton onClick={() => {
+                                setEditTitle(!editTitle);
+                                props.handleUpdateStorage(props.jsonData._id, postTitle);
+                            }}>
                                 <DoneOutlined />
                             </IconButton>
                             <IconButton>

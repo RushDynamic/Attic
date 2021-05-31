@@ -24,13 +24,26 @@ function Storage() {
         });
     }
 
+    function handleUpdateStorage(_id, _title) {
+        fetch("http://localhost:3001/storage/update", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: _id,
+                title: _title
+            })
+        }).then(() => {
+            console.log("Finished update request");
+        })
+    }
+
     return (
         <Container>
             <Grid container spacing={3}>
                 {
                     sampleData.map(data => (
                         <Grid item md={3} sm={6} xs={12}>
-                            <StorageCard jsonData={data} handleDeleteStorage={handleDeleteStorage} />
+                            <StorageCard jsonData={data} handleDeleteStorage={handleDeleteStorage} handleUpdateStorage={handleUpdateStorage} />
                         </Grid>
                     ))
                 }
