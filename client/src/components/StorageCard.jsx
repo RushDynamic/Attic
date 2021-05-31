@@ -43,7 +43,7 @@ function StorageCard(props) {
                             <IconButton onClick={() => setEditTitle(!editTitle)}>
                                 <EditOutlined />
                             </IconButton>
-                            <IconButton onClick={() => props.handleDeleteStorage(props)}>
+                            <IconButton onClick={() => props.handleDeleteStorage(props.jsonData._id)}>
                                 <DeleteOutlined />
                             </IconButton>
                         </div>
@@ -62,7 +62,7 @@ function StorageCard(props) {
                     </CardActions>
                 </Collapse>
             </Card>
-        </div >
+        </div>
     );
 }
 

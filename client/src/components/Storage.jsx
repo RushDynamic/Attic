@@ -13,12 +13,12 @@ function Storage() {
     const [sampleData, setSampleData] = useState([]);
     console.log(sampleData);
 
-    function handleDeleteStorage(props) {
-        fetch("http://localhost:3001/storage/delete/" + props.jsonData._id, {
+    function handleDeleteStorage(id) {
+        fetch("http://localhost:3001/storage/delete/" + id, {
             method: 'GET'
         }).then(() => {
             console.log("Finished delete request");
-            const filteredSampleData = sampleData.filter(data => data._id !== props.jsonData._id);
+            const filteredSampleData = sampleData.filter(data => data._id !== id);
             console.log(filteredSampleData);
             setSampleData(filteredSampleData);
         });
