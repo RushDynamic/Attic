@@ -10,7 +10,7 @@ function StorageCard(props) {
     const [storedData, setStoredData] = useState({ title: props.jsonData.name, text: props.jsonData.text });
     useEffect(() => {
         setCurrentData({ title: props.jsonData.name, text: props.jsonData.text });
-    }, [props.jsonData.name])
+    }, [props.jsonData.name, props.jsonData.text])
 
     return (
         <div>

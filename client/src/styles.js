@@ -71,18 +71,29 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-between',
     },
 
-    footerContainer: {
+    footerBar: {
+        display: 'flex',
         textAlign: 'center',
+        justifyContent: 'center',
         marginTop: '5vh',
         backgroundColor: 'grey',
         minHeight: '5vh'
     },
+    footerContainer: {
+        padding: '2vh',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%'
+    },
     footerText: {
         display: 'flex',
+        color: 'white',
         justifyContent: 'center',
-        flexDirection: 'column',
-        padding: '2vh',
-        color: 'white'
+        width: '100%'
+    },
+    footerIcons: {
+
     }
 }));
 

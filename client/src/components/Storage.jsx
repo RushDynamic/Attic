@@ -4,7 +4,6 @@ import useStyles from "../styles.js";
 import StorageCard from './StorageCard.jsx';
 
 function Storage() {
-
     const [sampleData, setSampleData] = useState([]);
     const [loaded, setLoaded] = useState(false);
     const classes = useStyles();
