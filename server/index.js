@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import notesRoutes from './routes/notes.js';
+import accountRoutes from './routes/account.js';
 import bodyParser from 'body-parser';
 
 const app = express();
@@ -23,3 +24,4 @@ app.use((req, res, next) => {
 // app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use('/storage', notesRoutes);
+app.use('/account', accountRoutes);

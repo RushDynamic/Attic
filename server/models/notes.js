@@ -4,13 +4,17 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-const noteSchema = new Schema({
-    id: { type: String, required: true },
-    name: { type: String, required: true },
-    text: { type: String, required: true },
-    gender: { type: String, required: true },
-    ip_address: { type: String, required: true },
-}, { timestamps: true });
+const noteSchema = new Schema(
+    {
+        id: { type: String, required: true },
+        name: { type: String, required: true },
+        text: { type: String, required: true },
+        gender: { type: String, required: true },
+        ip_address: { type: String, required: true },
+    },
+    {
+        timestamps: true
+    });
 
 export const Note = mongoose.model('dummy-note', noteSchema);
 
