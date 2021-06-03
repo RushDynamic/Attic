@@ -13,7 +13,8 @@ function Alert(props) {
 function Register() {
     const classes = useStyles();
     const [userData, setUserData] = useState({ email: "", username: "", password: "" });
-    const [showAlert, setShowAlert] = useState(false);
+    const [regState, setRegState] = useState({ regInProgress: false, showAlert: false });
+    // TODO: Update alert for unsuccessful registration as well
 
     return (
         <div>
@@ -59,7 +60,7 @@ function Register() {
                             </Grid>
                             <Grid item>
                                 <div className={classes.login_buttons_container}>
-                                    <Button variant="contained" color="primary" className={classes.btn_login} onClick={() => registerUser(userData, setShowAlert)}>
+                                    <Button variant="contained" color="primary" disabled={regState.regInProgress} className={classes.btn_login} onClick={() => registerUser(userData, setRegState)}>
                                         Register
                                     </Button>
                                     <Button variant="outlined" color="primary" className={classes.btn_register} component={Link} to="/">
@@ -67,7 +68,7 @@ function Register() {
                                     </Button>
                                 </div>
                             </Grid>
-                            <Snackbar open={showAlert} autoHideDuration={4000} onClose={() => setShowAlert(false)}>
+                            <Snackbar open={regState.showAlert} autoHideDuration={4000} onClose={() => setRegState({ regInProgress: false, showAlert: false })}>
                                 <Alert severity="success">
                                     You have successfully registered!
                                 </Alert>

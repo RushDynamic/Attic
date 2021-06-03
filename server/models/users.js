@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-const registrationSchema = new Schema(
+const userSchema = new Schema(
     {
         email: { type: String, required: true },
         username: { type: String, required: true },
@@ -11,4 +11,4 @@ const registrationSchema = new Schema(
         timestamps: true
     });
 
-export const Registration = new mongoose.model('users', registrationSchema);
+export const User = new mongoose.model('users', userSchema);

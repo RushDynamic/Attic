@@ -1,4 +1,5 @@
-export function registerUser(userData, setShowAlert) {
+export function registerUser(userData, setRegState) {
+    setRegState({ regInProgress: true, showAlert: false });
     fetch("http://localhost:3001/account/register", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -6,8 +7,7 @@ export function registerUser(userData, setShowAlert) {
     })
         .then(res => {
             res.json();
-            setShowAlert(true);
-
+            setRegState({ regInProgress: false, showAlert: true })
         })
         .catch(err => console.log(err));
 }
