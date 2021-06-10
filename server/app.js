@@ -1,8 +1,14 @@
+import dotenv from 'dotenv';
+dotenv.config();
+// TODO: Remove this for prod
+
 import express from 'express';
 import mongoose from 'mongoose';
 import notesRoutes from './routes/notes.js';
 import accountRoutes from './routes/account.js';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 const app = express();
 
@@ -15,13 +21,19 @@ mongoose.connect(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
         }))
     .catch((err) => { console.log(err) });
 
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
-    next();
-});
-// app.use(bodyParser.urlencoded({extended: false}));
+// CORS
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
+// app.use((req, res, next) => {
+//     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+//     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+//     res.header("Access-Control-Allow-Credentials", "true");
+//     next();
+// });
+
+app.use(cookieParser());
 app.use(bodyParser.json());
+
+// Routes
 app.use('/storage', notesRoutes);
 app.use('/account', accountRoutes);

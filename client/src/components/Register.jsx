@@ -4,7 +4,7 @@ import { Typography, TextField, Container, Card, Grid, CardActions, CardContent,
 import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { Link } from 'react-router-dom';
-import { registerUser } from './controllers/Register.js';
+import { registerUser } from './models/register.js';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -63,7 +63,7 @@ function Register() {
                                     <Button variant="contained" color="primary" disabled={regState.regInProgress} className={classes.btn_login} onClick={() => registerUser(userData, setRegState)}>
                                         Register
                                     </Button>
-                                    <Button variant="outlined" color="primary" className={classes.btn_register} component={Link} to="/">
+                                    <Button variant="outlined" color="primary" className={classes.btn_register} component={Link} to="/login">
                                         Login
                                     </Button>
                                 </div>

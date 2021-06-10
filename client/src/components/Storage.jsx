@@ -1,25 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Container, Grid, Typography, LinearProgress } from '@material-ui/core';
 import useStyles from "../styles.js";
 import StorageCard from './StorageCard.jsx';
+import { UserContext } from './UserContext.jsx';
 
 function Storage() {
     const [sampleData, setSampleData] = useState([]);
     const [loaded, setLoaded] = useState(false);
+    const { user, setUser } = useContext(UserContext);
+    const history = useHistory();
     const classes = useStyles();
 
     useEffect(() => {
-        fetch("http://localhost:3001/storage/fetch")
-            .then(res => res.json())
-            .then(data => {
-                setSampleData(data);
-                setLoaded(true);
-            });
+        checkLoginStatus();
     }, []);
 
+    useEffect(() => {
+        if (user.accessToken != null) {
+            fetchPosts();
+        }
+    }, [user]);
+
+    // Handle 403 errors for update and delete
     function handleDeleteStorage(_id) {
         fetch("http://localhost:3001/storage/delete/" + _id, {
-            method: 'GET'
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${user.accessToken}`
+            },
+            credentials: 'include'
         }).then(() => {
             console.log("Finished delete request");
             const filteredSampleData = sampleData.filter(data => data._id !== _id);
@@ -31,7 +41,11 @@ function Storage() {
     function handleUpdateStorage(_id, _newData) {
         fetch("http://localhost:3001/storage/update", {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.accessToken}`
+            },
+            credentials: 'include',
             body: JSON.stringify({
                 id: _id,
                 title: _newData.title,
@@ -40,6 +54,61 @@ function Storage() {
         }).then(() => {
             console.log("Finished update request");
         })
+    }
+
+    function fetchPosts() {
+        console.log("Inside fetch posts ", user)
+        fetch("http://localhost:3001/storage/fetch", {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${user.accessToken}`
+            },
+            credentials: 'include'
+        })
+            .then(res => {
+                if (res.status === 200) {
+                    return res.json();
+                }
+                else if (res.status === 403) {
+                    history.push('/login')
+                }
+                else return null;
+            })
+            .then(fetchedContent => {
+                if (fetchedContent != null) {
+                    console.log(fetchedContent);
+                    setSampleData(fetchedContent);
+                    setLoaded(true);
+                }
+                else {
+                    setLoaded(true);
+                    setSampleData([]);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                setLoaded(false);
+            });
+    }
+
+    function checkLoginStatus() {
+        fetch("http://localhost:3001/account/logged_in", {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${user.accessToken}`
+            },
+            credentials: 'include'
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.logged_in == true) {
+                    setUser({ username: user.username, accessToken: data.accessToken });
+                }
+                else {
+                    setUser({});
+                    history.push('/login');
+                }
+            })
     }
 
     return (
