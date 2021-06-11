@@ -4,8 +4,8 @@ import { getNotes, addNote, deleteNote, updateNote } from '../controllers/notes.
 
 const router = express.Router();
 
-router.get('/fetch', authenticateToken, getNotes);
-router.get('/add', authenticateToken, addNote);
+router.post('/fetch', authenticateToken, getNotes);
+router.post('/add', authenticateToken, addNote);
 router.get('/delete/:id', authenticateToken, deleteNote);
 router.post('/update', authenticateToken, updateNote);
 export default router;

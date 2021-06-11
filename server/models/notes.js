@@ -6,16 +6,15 @@ const Schema = mongoose.Schema;
 
 const noteSchema = new Schema(
     {
-        id: { type: String, required: true },
-        name: { type: String, required: true },
-        text: { type: String, required: true },
-        gender: { type: String, required: true },
-        ip_address: { type: String, required: true },
+        username: { type: String, required: true },
+        note_title: { type: String, required: true },
+        note_body: { type: String, required: true },
+        last_edited: { type: String, required: true },
     },
     {
         timestamps: true
     });
 
-export const Note = mongoose.model('dummy-note', noteSchema);
+export const Note = mongoose.model('notes', noteSchema);
 
 //module.exports = Note;
