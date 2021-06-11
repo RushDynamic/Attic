@@ -6,11 +6,11 @@ import useStyles from "../styles.js";
 function StorageCard(props) {
     const classes = useStyles();
     const [editCard, setEditCard] = useState(false);
-    const [currentData, setCurrentData] = useState({ title: props.jsonData.name, text: props.jsonData.text })
-    const [storedData, setStoredData] = useState({ title: props.jsonData.name, text: props.jsonData.text });
+    const [currentData, setCurrentData] = useState({ title: props.jsonData.note_title, body: props.jsonData.note_body, edited: props.jsonData.last_edited })
+    const [storedData, setStoredData] = useState({ title: props.jsonData.note_title, body: props.jsonData.note_body, edited: props.jsonData.last_edited });
     useEffect(() => {
-        setCurrentData({ title: props.jsonData.name, text: props.jsonData.text });
-    }, [props.jsonData.name, props.jsonData.text])
+        setCurrentData({ title: props.jsonData.note_title, body: props.jsonData.note_body, edited: props.jsonData.last_edited });
+    }, [props.jsonData.note_title, props.jsonData.note_body])
 
     return (
         <div>
@@ -21,28 +21,24 @@ function StorageCard(props) {
                             currentData.title
                         }
                         subheader={
-                            props.jsonData.ip_address
+                            currentData.edited
                         }
-                    // action={
-                    //     <IconButton onClick={() => props.handleDeleteStorage(props)}>
-                    //         <DeleteOutlined />
-                    //     </IconButton>
-                    // }
+                        subheaderTypographyProps={{ variant: 'subtitle2' }}
                     />
                     <CardContent>
                         <Typography variant="body1" color="textSecondary">
-                            {currentData.text}
+                            {currentData.body}
                         </Typography>
                     </CardContent>
                 </Collapse>
                 <Collapse in={editCard}>
                     <CardHeader
                         title={
-                            <TextField value={currentData.title} fullWidth={true} onChange={event => setCurrentData({ title: event.target.value, text: currentData.text })} />
+                            <TextField value={currentData.title} fullWidth={true} onChange={event => setCurrentData({ title: event.target.value, body: currentData.body, edited: new Date().toLocaleString() })} />
                         }
                     />
                     <CardContent>
-                        <TextField value={currentData.text} multiline rowsMax={6} fullWidth={true} onChange={event => setCurrentData({ title: currentData.title, text: event.target.value })} />
+                        <TextField value={currentData.body} multiline rowsMax={6} fullWidth={true} onChange={event => setCurrentData({ title: currentData.title, body: event.target.value, edited: new Date().toLocaleString() })} />
                     </CardContent>
                 </Collapse>
 
@@ -64,13 +60,13 @@ function StorageCard(props) {
                             <IconButton onClick={() => {
                                 setEditCard(!editCard);
                                 props.handleUpdateStorage(props.jsonData._id, currentData);
-                                setStoredData({ title: currentData.title, text: currentData.text });
+                                setStoredData({ title: currentData.title, body: currentData.body, edited: currentData.edited });
                             }}>
                                 <DoneOutlined />
                             </IconButton>
                             <IconButton onClick={() => {
                                 setEditCard(!editCard);
-                                setCurrentData({ title: storedData.title, text: storedData.text })
+                                setCurrentData({ title: storedData.title, body: storedData.body })
                             }}>
                                 <CloseOutlined />
                             </IconButton>

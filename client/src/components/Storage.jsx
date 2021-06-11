@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Container, Grid, Typography, LinearProgress } from '@material-ui/core';
-import { Snackbar } from '@material-ui/core';
+import { Container, Grid, Typography, LinearProgress, TextField, Snackbar, IconButton, Card, CardContent, CardHeader, CardActions, Collapse } from '@material-ui/core';
+import { CloseOutlined, DoneOutlined } from '@material-ui/icons';
+import QueueIcon from '@material-ui/icons/Queue';
 import MuiAlert from '@material-ui/lab/Alert';
 import useStyles from "../styles.js";
 import StorageCard from './StorageCard.jsx';
@@ -14,7 +15,9 @@ function Alert(props) {
 function Storage() {
     const [sampleData, setSampleData] = useState([]);
     const [loaded, setLoaded] = useState(false);
+    const [currentData, setCurrentData] = useState({ title: null, body: null, edited: null })
     const [showLoggedInAlert, setShowLoggedInAlert] = useState(false);
+    const [expandNewNote, setExpandNewNote] = useState(false);
     const { user, setUser } = useContext(UserContext);
     const history = useHistory();
     const classes = useStyles();
@@ -56,12 +59,42 @@ function Storage() {
             credentials: 'include',
             body: JSON.stringify({
                 id: _id,
-                title: _newData.title,
-                text: _newData.text
+                note_title: _newData.title,
+                note_body: _newData.body,
+                last_edited: _newData.edited
             })
         }).then(() => {
             console.log("Finished update request");
         })
+    }
+
+    function handleCreateNote() {
+        fetch("http://localhost:3001/storage/add", {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.accessToken}`
+            },
+            body: JSON.stringify({
+                username: user.username,
+                note_title: currentData.title,
+                note_body: currentData.body,
+                last_edited: currentData.edited
+            })
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.success) {
+                    // show a successful alert
+                    fetchPosts();
+                    setExpandNewNote(!expandNewNote);
+                    setCurrentData({ title: "", body: "", edited: "" });
+                }
+                else {
+                    // show an unsuccessful alert
+                }
+            })
     }
 
     function checkLoginStatus() {
@@ -74,24 +107,25 @@ function Storage() {
         })
             .then(res => res.json())
             .then(data => {
-                if (data.logged_in == true) {
+                if (data.logged_in === true) {
                     setUser({ username: data.username, accessToken: data.accessToken });
                     setShowLoggedInAlert(true);
                 }
                 else {
-                    setUser({});
+                    setUser({ username: null, accessToken: null });
                     history.push('/login');
                 }
             })
     }
 
     function fetchPosts() {
-        console.log("Inside fetch posts ", user)
         fetch("http://localhost:3001/storage/fetch", {
-            method: 'GET',
+            method: 'POST',
             headers: {
-                'Authorization': `Bearer ${user.accessToken}`
+                'Authorization': `Bearer ${user.accessToken}`,
+                'Content-Type': 'application/json'
             },
+            body: JSON.stringify({ username: user.username }),
             credentials: 'include'
         })
             .then(res => {
@@ -119,9 +153,61 @@ function Storage() {
                 setLoaded(false);
             });
     }
-
     return (
         <Container>
+            <div className={classes.newNoteContainer}>
+                <Collapse in={!expandNewNote} >
+                    <IconButton onClick={() => setExpandNewNote(!expandNewNote)}>
+                        <QueueIcon style={{ fontSize: 75 }} />
+                    </IconButton>
+                </Collapse>
+                {/* Actual input fields go here */}
+                <Collapse in={expandNewNote}>
+                    <Card elevation={1}>
+                        <CardHeader
+                            title={
+                                <div>
+                                    <Typography variant={"subtitle2"} style={{
+                                        width: '100%',
+                                        display: 'flex',
+                                        justifyContent: 'flex-end'
+                                    }}>
+                                        New note
+                                    </Typography>
+                                    <TextField
+                                        fullWidth={true}
+                                        label="Title"
+                                        value={currentData.title}
+                                        onChange={event => setCurrentData({ title: event.target.value, body: currentData.body, edited: new Date().toLocaleString() })}
+                                    />
+                                </div>
+                            }
+                        />
+                        <CardContent>
+                            <TextField
+                                fullWidth={true}
+                                multiline rows={6}
+                                label={currentData.body === "" ? "Type something here..." : ""}
+                                size="large"
+                                variant="outlined"
+                                InputLabelProps={{ shrink: false }}
+                                value={currentData.body}
+                                onChange={event => setCurrentData({ title: currentData.title, body: event.target.value, edited: new Date().toLocaleString() })}
+                            />
+                        </CardContent>
+                        <CardActions>
+                            <div className={classes.actions_container}>
+                                <IconButton onClick={() => handleCreateNote()}>
+                                    <DoneOutlined />
+                                </IconButton>
+                                <IconButton onClick={() => setExpandNewNote(!expandNewNote)}>
+                                    <CloseOutlined />
+                                </IconButton>
+                            </div>
+                        </CardActions>
+                    </Card>
+                </Collapse>
+            </div>
             <Grid container spacing={3}>
                 {
                     loaded ? (sampleData.length === 0 ? <Container className={classes.notes_default_container}><Typography variant="h2" >No notes to display :(</Typography></Container> : sampleData.map(data => (

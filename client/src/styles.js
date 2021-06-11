@@ -21,8 +21,9 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: '2vh'
     },
 
-    btnLogout: {
-
+    newNoteContainer: {
+        marginBottom: '3vh',
+        width: '75%'
     },
 
     // Card Properties
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     actions_container: {
-        width: '100vh',
+        width: '100%',
         display: 'flex',
         justifyContent: 'flex-end'
     },
