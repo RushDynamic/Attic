@@ -45,7 +45,7 @@ function Register() {
                     setUser({ username: data.username, accessToken: data.accessToken });
                 }
                 else {
-                    setUser({});
+                    setUser({ username: null, accessToken: null });
                     history.push('/register');
                 }
             })

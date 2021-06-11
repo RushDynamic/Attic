@@ -53,7 +53,7 @@ function Login() {
                     setUser({ username: data.username, accessToken: data.accessToken });
                 }
                 else {
-                    setUser({});
+                    setUser({ username: null, accessToken: null });
                     history.push('/login');
                 }
             })
@@ -82,7 +82,7 @@ function Login() {
                                     } />
                             </Grid>
                             <Grid item>
-                                <TextField className={classes.TextField} margin="normal" fullWidth variant="outlined" label="Password" onChange=
+                                <TextField className={classes.TextField} margin="normal" fullWidth variant="outlined" label="Password" type="password" onChange=
                                     {
                                         event => {
                                             setUserData(

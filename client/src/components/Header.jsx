@@ -21,8 +21,10 @@ function Header() {
             method: 'POST',
             credentials: 'include',
             headers: {
-                'Authorization': `Bearer ${user.accessToken}`
-            }
+                'Authorization': `Bearer ${user.accessToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username: user.username })
         })
             .then((res) => res.json())
             .then((data) => {
