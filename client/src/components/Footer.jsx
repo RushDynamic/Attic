@@ -1,5 +1,4 @@
-import { Typography, Container, Link } from '@material-ui/core';
-import { GitHub } from '@material-ui/icons';
+import { Typography, Link } from '@material-ui/core';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import React from 'react';
 import useStyles from "../styles.js"

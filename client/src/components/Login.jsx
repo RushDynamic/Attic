@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import useStyles from "../styles.js";
-import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
-import { Typography, TextField, Container, Card, Grid, CardActions, CardContent, Button } from "@material-ui/core";
+import { useHistory } from 'react-router-dom';
+import { Typography, TextField, Container, Card, Grid, CardContent, Button } from "@material-ui/core";
 import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { Link } from 'react-router-dom'
@@ -49,8 +49,8 @@ function Login() {
         })
             .then(res => res.json())
             .then(data => {
-                if (data.logged_in == true) {
-                    setUser({ username: user.username, accessToken: data.accessToken });
+                if (data.logged_in === true) {
+                    setUser({ username: data.username, accessToken: data.accessToken });
                 }
                 else {
                     setUser({});

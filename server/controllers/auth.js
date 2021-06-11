@@ -25,9 +25,9 @@ export function generateRefreshToken(username) {
 export function authenticateToken(req, res, next) {
     console.log("Method: authenticateToken()");
     const refreshToken = req.cookies.refreshToken;
-    const authHeader = req.headers['authorization'];
+    const authHeader = req.headers['Authorization'];
     const accessToken = authHeader && authHeader.split(' ')[1];
-    if (refreshToken == null) return res.status(401).json({ logged_in: "false" });
+    if (refreshToken == null || refreshToken == "") return res.status(401).json({ logged_in: "false" });
     verifyAccessToken(accessToken).then((result) => {
         console.log("verifyAccessToken result: ", result);
         if (!result) {

@@ -1,13 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Container, Grid, Typography, LinearProgress } from '@material-ui/core';
+import { Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 import useStyles from "../styles.js";
 import StorageCard from './StorageCard.jsx';
 import { UserContext } from './UserContext.jsx';
 
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 function Storage() {
     const [sampleData, setSampleData] = useState([]);
     const [loaded, setLoaded] = useState(false);
+    const [showLoggedInAlert, setShowLoggedInAlert] = useState(false);
     const { user, setUser } = useContext(UserContext);
     const history = useHistory();
     const classes = useStyles();
@@ -56,6 +63,27 @@ function Storage() {
         })
     }
 
+    function checkLoginStatus() {
+        fetch("http://localhost:3001/account/logged_in", {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${user.accessToken}`
+            },
+            credentials: 'include'
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.logged_in == true) {
+                    setUser({ username: data.username, accessToken: data.accessToken });
+                    setShowLoggedInAlert(true);
+                }
+                else {
+                    setUser({});
+                    history.push('/login');
+                }
+            })
+    }
+
     function fetchPosts() {
         console.log("Inside fetch posts ", user)
         fetch("http://localhost:3001/storage/fetch", {
@@ -91,26 +119,6 @@ function Storage() {
             });
     }
 
-    function checkLoginStatus() {
-        fetch("http://localhost:3001/account/logged_in", {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${user.accessToken}`
-            },
-            credentials: 'include'
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.logged_in == true) {
-                    setUser({ username: user.username, accessToken: data.accessToken });
-                }
-                else {
-                    setUser({});
-                    history.push('/login');
-                }
-            })
-    }
-
     return (
         <Container>
             <Grid container spacing={3}>
@@ -121,6 +129,11 @@ function Storage() {
                         </Grid>
                     ))) : <Container className={classes.loading_container}><LinearProgress classes={{ colorPrimary: classes.progressBarColorPrimary, barColorPrimary: classes.progressBarProgressColorPrimary }} /></Container>
                 }
+                <Snackbar open={showLoggedInAlert} autoHideDuration={3000} onClose={() => setShowLoggedInAlert(false)}>
+                    <Alert severity="success">
+                        {`You're logged in as ${user.username}`}
+                    </Alert>
+                </Snackbar>
             </Grid>
         </Container >
     );

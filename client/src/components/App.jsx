@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, Container } from "@material-ui/core";
+import { CssBaseline } from "@material-ui/core";
 import useStyles from "../styles.js"
 import Header from "./Header.jsx";
 import Login from "./Login.jsx";
@@ -19,14 +19,14 @@ function App() {
       <Router>
         <CssBaseline />
         <div className={classes.mainContainer}>
-          <Header />
-          <Switch>
-            <UserContext.Provider value={{ user, setUser }}>
+          <UserContext.Provider value={{ user, setUser }}>
+            <Header />
+            <Switch>
               <Route path="/" exact component={Storage} />
               <Route path="/register" component={Register} />
               <Route path="/login" component={Login} />
-            </UserContext.Provider>
-          </Switch>
+            </Switch>
+          </UserContext.Provider>
           <Footer />
         </div>
       </Router>

@@ -9,12 +9,20 @@ const useStyles = makeStyles((theme) => ({
     // Header properties
     header_container: {
         display: 'flex',
+        flexDirection: 'row',
         justifyContent: 'center',
-        paddingTop: '2vh',
+        alignItems: 'flex-end',
+        paddingTop: '3vh',
         paddingBottom: '5vh'
+
     },
     header_logo: {
-        height: '20vh'
+        height: '20vh',
+        paddingRight: '2vh'
+    },
+
+    btnLogout: {
+
     },
 
     // Card Properties

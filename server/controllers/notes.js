@@ -1,8 +1,9 @@
 import { Note } from '../models/notes.js';
 import faker from 'faker';
 
+// TODO: Handle error response properly
 export function getNotes(req, res) {
-    //const sleep = () => new Promise(resolve => setTimeout(resolve, 3000));
+
     Note.find()
         .then((result) => {
             res.send(result);

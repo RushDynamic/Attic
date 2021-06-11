@@ -4,6 +4,8 @@ import bcrypt from 'bcrypt';
 import { generateAccessToken, generateRefreshToken, verifyAccessToken, verifyRefreshToken } from './auth.js';
 import jwt from 'jsonwebtoken';
 
+// TODO: Fix error handlers
+
 export function registerUser(req, res) {
     hashPassword(req.body.password)
         .then((hashedPassword) => {
@@ -89,12 +91,27 @@ export function loginUser(req, res) {
         })
 }
 
+export function logoutUser(req, res) {
+    AuthToken.findOneAndRemove({
+        username: req.body.username,
+        refreshToken: req.cookies.refreshToken
+    }).then((result) => {
+        //var expiryDate = new Date(Number(new Date()) - 315360000000);
+        res.cookie('refreshToken', "", { sameSite: 'strict', path: '/', httpOnly: true });
+        console.log(result);
+        res.status(200).json({ msg: "Logout successful", success: true });
+    }).catch((err) => {
+        console.log("An error occured while deleting refresh token from DB", err);
+        res.status(500).json({ msg: "An error occured", success: false });
+    });
+}
+
 export function checkLoginStatus(req, res) {
     console.log("Method: checkLoginStatus()");
     const refreshToken = req.cookies.refreshToken;
     const authHeader = req.headers['authorization'];
     const accessToken = authHeader && authHeader.split(' ')[1];
-    if (refreshToken == null) return res.status(401).json({ logged_in: "false" });
+    if (refreshToken == null || refreshToken == "") return res.status(401).json({ logged_in: "false" });
     verifyAccessToken(accessToken).then((result) => {
         console.log("verifyAccessToken result: ", result);
         if (!result) {
@@ -109,7 +126,7 @@ export function checkLoginStatus(req, res) {
                 jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
                     if (err) return res.status(401).json({ logged_in: "false" });
                     const accessToken = generateAccessToken(username);
-                    res.json({ logged_in: true, accessToken: accessToken });
+                    res.json({ logged_in: true, username: username, accessToken: accessToken });
                 })
             });
         }
@@ -127,6 +144,5 @@ async function hashPassword(rawPassword) {
     }
     catch (err) {
         console.log(err);
-        res.status(500).send();
     }
 }
