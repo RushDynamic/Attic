@@ -28,7 +28,7 @@ export function registerUser(req, res) {
                     newToken.save()
                         .then(() => {
                             res.cookie('refreshToken', refreshToken, { sameSite: 'strict', path: '/', httpOnly: true });
-                            res.status(202).json(
+                            res.status(200).json(
                                 {
                                     username: username,
                                     accessToken: accessToken
@@ -76,7 +76,7 @@ export function loginUser(req, res) {
                             newToken.save()
                                 .then(() => {
                                     res.cookie('refreshToken', refreshToken, { sameSite: 'strict', path: '/', httpOnly: true });
-                                    res.status(202).json(
+                                    res.status(200).json(
                                         {
                                             authenticated: true,
                                             accessToken: accessToken
