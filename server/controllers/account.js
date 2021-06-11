@@ -17,7 +17,24 @@ export function registerUser(req, res) {
 
             newUser.save()
                 .then((result) => {
-                    res.send(result);
+                    const username = result.username;
+                    const accessToken = generateAccessToken(username);
+                    const refreshToken = generateRefreshToken(username);
+
+                    const newToken = new AuthToken({
+                        username: username,
+                        refreshToken: refreshToken
+                    })
+                    newToken.save()
+                        .then(() => {
+                            res.cookie('refreshToken', refreshToken, { sameSite: 'strict', path: '/', httpOnly: true });
+                            res.status(202).json(
+                                {
+                                    username: username,
+                                    accessToken: accessToken
+                                }
+                            );
+                        });
                     console.log("User registered successfully")
                 })
                 .catch((err) => {

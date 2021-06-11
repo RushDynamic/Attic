@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useHistory } from "react-router";
 import useStyles from "../styles.js";
 import { Typography, TextField, Container, Card, Grid, CardContent, Button } from "@material-ui/core";
 import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { Link } from 'react-router-dom';
 import { registerUser } from './models/register.js';
+import { UserContext } from "./UserContext.jsx";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -14,7 +16,40 @@ function Register() {
     const classes = useStyles();
     const [userData, setUserData] = useState({ email: "", username: "", password: "" });
     const [regState, setRegState] = useState({ regInProgress: false, showAlert: false });
+    const { user, setUser } = useContext(UserContext);
+    const history = useHistory();
     // TODO: Update alert for unsuccessful registration as well
+
+    useEffect(() => {
+        if (user.accessToken != null && user.username != null) {
+            history.push('/');
+        }
+    }, [user]);
+
+    useEffect(() => {
+        // Invoke backend and check if stored jwt refresh token is valid
+        checkLoginStatus();
+    }, [])
+
+    function checkLoginStatus() {
+        fetch("http://localhost:3001/account/logged_in", {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${user.accessToken}`
+            },
+            credentials: 'include'
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.logged_in === true) {
+                    setUser({ username: data.username, accessToken: data.accessToken });
+                }
+                else {
+                    setUser({});
+                    history.push('/register');
+                }
+            })
+    }
 
     return (
         <div>
@@ -60,7 +95,7 @@ function Register() {
                             </Grid>
                             <Grid item>
                                 <div className={classes.login_buttons_container}>
-                                    <Button variant="contained" color="primary" disabled={regState.regInProgress} className={classes.btn_login} onClick={() => registerUser(userData, setRegState)}>
+                                    <Button variant="contained" color="primary" disabled={regState.regInProgress} className={classes.btn_login} onClick={() => registerUser(userData, setRegState, setUser)}>
                                         Register
                                     </Button>
                                     <Button variant="outlined" color="primary" className={classes.btn_register} component={Link} to="/login">
@@ -68,7 +103,7 @@ function Register() {
                                     </Button>
                                 </div>
                             </Grid>
-                            <Snackbar open={regState.showAlert} autoHideDuration={4000} onClose={() => setRegState({ regInProgress: false, showAlert: false })}>
+                            <Snackbar open={regState.showAlert} autoHideDuration={3000} onClose={() => setRegState({ regInProgress: false, showAlert: false })}>
                                 <Alert severity="success">
                                     You have successfully registered!
                                 </Alert>

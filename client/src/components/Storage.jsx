@@ -23,6 +23,7 @@ function Storage() {
         checkLoginStatus();
     }, []);
 
+    // TODO: Find better way to call fetchPosts()
     useEffect(() => {
         if (user.accessToken != null) {
             fetchPosts();
