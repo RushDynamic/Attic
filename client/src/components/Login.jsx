@@ -16,6 +16,8 @@ function Login() {
     const classes = useStyles();
     const [userData, setUserData] = useState({ username: "", password: "" });
     const [loginState, setLoginState] = useState({ loginStatus: false, showAlert: false });
+    const [failureMsg, setFailureMsg] = useState("An error occurred while logging in");
+
     const { user, setUser } = useContext(UserContext);
     const history = useHistory();
 
@@ -97,7 +99,7 @@ function Login() {
                             </Grid>
                             <Grid item>
                                 <div className={classes.login_buttons_container}>
-                                    <Button variant="contained" color="primary" className={classes.btn_login} onClick={() => loginUser(userData, setLoginState, setUser)}>
+                                    <Button variant="contained" color="primary" className={classes.btn_login} onClick={() => loginUser(userData, setLoginState, setUser, setFailureMsg)}>
                                         Login
                                     </Button>
                                     <Button variant="outlined" color="primary" className={classes.btn_register} component={Link} to="/register">
@@ -112,7 +114,7 @@ function Login() {
                             </Snackbar>
                             <Snackbar open={loginState.showAlert && !loginState.loginStatus} autoHideDuration={4000} onClose={() => setLoginState({ loginStatus: false, showAlert: false })}>
                                 <Alert severity="error">
-                                    Error while logging in
+                                    {failureMsg}
                                 </Alert>
                             </Snackbar>
                         </Grid>

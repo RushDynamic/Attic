@@ -16,7 +16,7 @@ function Register() {
     const classes = useStyles();
     const [userData, setUserData] = useState({ email: "", username: "", password: "" });
     const [regState, setRegState] = useState({ regInProgress: false, showSuccessAlert: false, showFailureAlert: false });
-    const [failureMsg, setFailureMsg] = useState("An error occured");
+    const [failureMsg, setFailureMsg] = useState("An error occurred");
     const { user, setUser } = useContext(UserContext);
     const history = useHistory();
     // TODO: Update alert for unsuccessful registration as well

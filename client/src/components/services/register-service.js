@@ -25,8 +25,8 @@ export function registerUser(userData, setRegState, setUser, setFailureMsg) {
             .catch(err => console.log(err));
     }
     else {
-        setRegState({ regInProgress: false, showSuccessAlert: false, showFailureAlert: true })
         setFailureMsg("Please fill all the required fields!")
+        setRegState({ regInProgress: false, showSuccessAlert: false, showFailureAlert: true })
     }
 }
 
