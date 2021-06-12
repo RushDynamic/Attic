@@ -5,7 +5,7 @@ import { Typography, TextField, Container, Card, Grid, CardContent, Button } fro
 import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { Link } from 'react-router-dom'
-import { loginUser } from './models/login.js';
+import { loginUser } from './services/login-service.js';
 import { UserContext } from "./UserContext.jsx";
 
 function Alert(props) {
