@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
         '&:hover': {
             transition: 'opacity 0.55s',
             opacity: '100%',
-            background: '-webkit-linear-gradient(75deg, #1fd1f9, #b621fe)',
+            background: '-webkit-linear-gradient(255deg, #1fd1f9, #b621fe)',
         },
     },
 
@@ -97,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         marginTop: '5vh',
         background: 'linear-gradient(315deg, #1fd1f9, #b621fe)',
-        minHeight: '5vh'
+        minHeight: '3vh'
     },
     footerContainer: {
         padding: '2vh',
@@ -108,12 +108,17 @@ const useStyles = makeStyles((theme) => ({
     },
     footerText: {
         display: 'flex',
+        flexDirection: 'column',
         color: 'black',
         justifyContent: 'center',
-        width: '100%'
+        width: '100%',
+        fontFamily: "font-family: 'Raleway', sans-serif"
     },
-    footerIcons: {
-
+    footerIcon: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        color: 'black'
     }
 }));
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import useStyles from "../styles.js";
 import { useHistory } from 'react-router-dom';
-import { Typography, TextField, Container, Card, Grid, CardContent, Button } from "@material-ui/core";
+import { Typography, TextField, Container, Card, Grid, CardContent, Button, Box } from "@material-ui/core";
 import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { Link } from 'react-router-dom'
@@ -64,8 +64,10 @@ function Login() {
             <Container component="main" maxWidth="xs">
                 <Card className={classes.Card}>
                     <CardContent>
-                        <Typography className={classes.Typography} variant="h5" gutterBottom>
-                            Login to Attic.
+                        <Typography variant="h5" gutterBottom styles={{ fontFamily: "'Nunito Sans', sans-serif" }}>
+                            <Box fontFamily="Raleway">
+                                Login to Attic.
+                            </Box>
                         </Typography>
 
                         <Grid container spacing={1} className={classes.text_field_container}>
