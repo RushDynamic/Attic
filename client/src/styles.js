@@ -39,7 +39,8 @@ const useStyles = makeStyles((theme) => ({
     btn_login: {
         width: '80vh',
         marginTop: '0.5vh',
-        marginRight: '1vh'
+        marginRight: '1vh',
+        background: '-webkit-linear-gradient(315deg, #1fd1f9, #b621fe)'
     },
 
     btn_register: {
@@ -76,10 +77,10 @@ const useStyles = makeStyles((theme) => ({
         width: '50vh'
     },
     progressBarColorPrimary: {
-        backgroundColor: 'grey',
+        backgroundColor: '-webkit-linear-gradient(75deg, #1fd1f9, #b621fe)',
     },
     progressBarProgressColorPrimary: {
-        backgroundColor: 'black',
+        backgroundColor: '-webkit-linear-gradient(75deg, #1fd1f9, #b621fe)',
     },
 
     // Added to anchor footer at the bottom
