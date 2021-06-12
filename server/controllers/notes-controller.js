@@ -1,4 +1,4 @@
-import { Note } from '../models/notes.js';
+import { Note } from '../models/note-model.js';
 import faker from 'faker';
 
 // TODO: Handle error response properly

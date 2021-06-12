@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { AuthToken } from '../models/auth-token.js';
+import { AuthToken } from '../models/auth-token-model.js';
 
 export function generateAccessToken(username) {
     return jwt.sign({ name: username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' });

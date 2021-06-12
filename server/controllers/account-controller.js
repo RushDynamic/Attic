@@ -1,7 +1,7 @@
-import { User } from '../models/users.js';
-import { AuthToken } from '../models/auth-token.js';
+import { User } from '../models/user-model.js';
+import { AuthToken } from '../models/auth-token-model.js';
 import bcrypt from 'bcrypt';
-import { generateAccessToken, generateRefreshToken, verifyAccessToken, verifyRefreshToken } from './auth.js';
+import { generateAccessToken, generateRefreshToken, verifyAccessToken, verifyRefreshToken } from '../services/auth-service.js';
 import jwt from 'jsonwebtoken';
 
 // TODO: Fix error handlers

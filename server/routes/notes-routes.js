@@ -1,6 +1,6 @@
 import express from 'express';
-import { authenticateToken } from '../controllers/auth.js';
-import { getNotes, addNote, deleteNote, updateNote } from '../controllers/notes.js';
+import { authenticateToken } from '../services/auth-service.js'
+import { getNotes, addNote, deleteNote, updateNote } from '../controllers/notes-controller.js';
 
 const router = express.Router();
 

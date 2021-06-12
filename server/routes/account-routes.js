@@ -1,6 +1,6 @@
 import express from 'express';
-import { loginUser, logoutUser, registerUser, checkLoginStatus } from '../controllers/account.js';
-import { authenticateToken } from '../controllers/auth.js';
+import { loginUser, logoutUser, registerUser, checkLoginStatus } from '../controllers/account-controller.js';
+import { authenticateToken } from '../services/auth-service.js';
 const router = express.Router();
 
 router.post('/register', registerUser);

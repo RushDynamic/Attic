@@ -4,8 +4,8 @@ dotenv.config();
 
 import express from 'express';
 import mongoose from 'mongoose';
-import notesRoutes from './routes/notes.js';
-import accountRoutes from './routes/account.js';
+import notesRoutes from './routes/notes-routes.js';
+import accountRoutes from './routes/account-routes.js';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
