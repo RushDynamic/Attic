@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Container, Grid, Typography, LinearProgress, TextField, Snackbar, IconButton, Card, CardContent, CardHeader, CardActions, Collapse } from '@material-ui/core';
 import { CloseOutlined, DoneOutlined } from '@material-ui/icons';
-import QueueIcon from '@material-ui/icons/Queue';
+import AddIcon from '@material-ui/icons/Add';
 import MuiAlert from '@material-ui/lab/Alert';
 import useStyles from "../styles.js";
 import StorageCard from './StorageCard.jsx';
@@ -33,7 +33,8 @@ function Storage() {
         }
     }, [user]);
 
-    // Handle 403 errors for update and delete
+    // TODO: Move actual logic for create, update and delete to service classes
+    // TODO:Handle 403 errors for update and delete
     function handleDeleteStorage(_id) {
         fetch("http://localhost:3001/storage/delete/" + _id, {
             method: 'GET',
@@ -157,8 +158,8 @@ function Storage() {
         <Container>
             <div className={classes.newNoteContainer}>
                 <Collapse in={!expandNewNote} >
-                    <IconButton onClick={() => setExpandNewNote(!expandNewNote)}>
-                        <QueueIcon style={{ fontSize: 75 }} />
+                    <IconButton onClick={() => setExpandNewNote(!expandNewNote)} className={classes.newNoteButton}>
+                        <AddIcon style={{ fontSize: 75 }} />
                     </IconButton>
                 </Collapse>
                 {/* Actual input fields go here */}

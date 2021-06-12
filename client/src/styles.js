@@ -53,6 +53,16 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'flex-end'
     },
 
+    newNoteButton: {
+        background: '-webkit-linear-gradient(315deg, #1fd1f9, #b621fe)',
+        opacity: '65%',
+        '&:hover': {
+            transition: 'opacity 0.55s',
+            opacity: '100%',
+            background: '-webkit-linear-gradient(75deg, #1fd1f9, #b621fe)',
+        },
+    },
+
     notes_default_container: {
         display: 'flex',
         justifyContent: 'center',
@@ -85,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         justifyContent: 'center',
         marginTop: '5vh',
-        backgroundColor: 'grey',
+        background: 'linear-gradient(315deg, #1fd1f9, #b621fe)',
         minHeight: '5vh'
     },
     footerContainer: {
@@ -97,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
     },
     footerText: {
         display: 'flex',
-        color: 'white',
+        color: 'black',
         justifyContent: 'center',
         width: '100%'
     },
