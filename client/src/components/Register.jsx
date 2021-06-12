@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router";
 import useStyles from "../styles.js";
-import { Typography, TextField, Container, Card, Grid, CardContent, Button } from "@material-ui/core";
+import { Typography, TextField, Container, Card, Grid, CardContent, Button, Box } from "@material-ui/core";
 import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { Link } from 'react-router-dom';
@@ -57,7 +57,9 @@ function Register() {
                 <Card className={classes.Card}>
                     <CardContent>
                         <Typography className={classes.Typography} variant="h5" gutterBottom>
-                            Create an account
+                            <Box fontFamily="Raleway">
+                                Create an account
+                            </Box>
                         </Typography>
                         <Grid container spacing={1} className={classes.text_field_container}>
                             <Grid item>
