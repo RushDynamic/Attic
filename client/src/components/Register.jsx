@@ -15,7 +15,8 @@ function Alert(props) {
 function Register() {
     const classes = useStyles();
     const [userData, setUserData] = useState({ email: "", username: "", password: "" });
-    const [regState, setRegState] = useState({ regInProgress: false, showAlert: false });
+    const [regState, setRegState] = useState({ regInProgress: false, showSuccessAlert: false, showFailureAlert: false });
+    const [failureMsg, setFailureMsg] = useState("An error occured");
     const { user, setUser } = useContext(UserContext);
     const history = useHistory();
     // TODO: Update alert for unsuccessful registration as well
@@ -97,7 +98,7 @@ function Register() {
                             </Grid>
                             <Grid item>
                                 <div className={classes.login_buttons_container}>
-                                    <Button variant="contained" color="primary" disabled={regState.regInProgress} className={classes.btn_login} onClick={() => registerUser(userData, setRegState, setUser)}>
+                                    <Button variant="contained" color="primary" disabled={regState.regInProgress} className={classes.btn_login} onClick={() => registerUser(userData, setRegState, setUser, setFailureMsg)}>
                                         Register
                                     </Button>
                                     <Button variant="outlined" color="primary" className={classes.btn_register} component={Link} to="/login">
@@ -105,9 +106,14 @@ function Register() {
                                     </Button>
                                 </div>
                             </Grid>
-                            <Snackbar open={regState.showAlert} autoHideDuration={3000} onClose={() => setRegState({ regInProgress: false, showAlert: false })}>
+                            <Snackbar open={regState.showSuccessAlert} autoHideDuration={3000} onClose={() => setRegState({ regInProgress: false, showSuccessAlert: false, showFailureAlert: false })}>
                                 <Alert severity="success">
                                     You have successfully registered!
+                                </Alert>
+                            </Snackbar>
+                            <Snackbar open={regState.showFailureAlert} autoHideDuration={3000} onClose={() => setRegState({ regInProgress: false, showSuccessAlert: false, showFailureAlert: false })}>
+                                <Alert severity="error">
+                                    {failureMsg}
                                 </Alert>
                             </Snackbar>
                         </Grid>

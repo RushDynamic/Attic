@@ -9,38 +9,52 @@ import jwt from 'jsonwebtoken';
 export function registerUser(req, res) {
     hashPassword(req.body.password)
         .then((hashedPassword) => {
-            const newUser = new User({
-                email: req.body.email,
-                username: req.body.username,
-                password: hashedPassword
+            User.findOne({
+                username: req.body.username
             })
-
-            newUser.save()
                 .then((result) => {
-                    const username = result.username;
-                    const accessToken = generateAccessToken(username);
-                    const refreshToken = generateRefreshToken(username);
+                    if (result != null) {
+                        // User already exists
+                        res.status(400).json({
+                            duplicate: true,
+                            success: false,
+                            msg: "Username unavailable"
+                        })
+                    }
 
-                    const newToken = new AuthToken({
-                        username: username,
-                        refreshToken: refreshToken
+                    const newUser = new User({
+                        email: req.body.email,
+                        username: req.body.username,
+                        password: hashedPassword
                     })
-                    newToken.save()
-                        .then(() => {
-                            res.cookie('refreshToken', refreshToken, { sameSite: 'strict', path: '/', httpOnly: true });
-                            res.status(200).json(
-                                {
-                                    username: username,
-                                    accessToken: accessToken
-                                }
-                            );
+                    newUser.save()
+                        .then((result) => {
+                            const username = result.username;
+                            const accessToken = generateAccessToken(username);
+                            const refreshToken = generateRefreshToken(username);
+
+                            const newToken = new AuthToken({
+                                username: username,
+                                refreshToken: refreshToken
+                            })
+                            newToken.save()
+                                .then(() => {
+                                    res.cookie('refreshToken', refreshToken, { sameSite: 'strict', path: '/', httpOnly: true });
+                                    res.status(200).json(
+                                        {
+                                            username: username,
+                                            accessToken: accessToken
+                                        }
+                                    );
+                                });
+                            console.log("User registered successfully")
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            res.status(500).send();
                         });
-                    console.log("User registered successfully")
                 })
-                .catch((err) => {
-                    console.log(err);
-                    res.status(500).send();
-                });
+
         })
 }
 
