@@ -1,6 +1,6 @@
 export function registerUser(userData, setRegState, setUser, setFailureMsg) {
     setRegState({ regInProgress: true, showSuccessAlert: false, showFailureAlert: false });
-    if (validateRequiredFields(userData)) {
+    if (validateRequiredFields(userData, setFailureMsg)) {
         fetch("http://localhost:3001/account/register", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -25,14 +25,25 @@ export function registerUser(userData, setRegState, setUser, setFailureMsg) {
             .catch(err => console.log(err));
     }
     else {
-        setFailureMsg("Please fill all the required fields!")
+        //setFailureMsg("Please fill all the required fields!")
         setRegState({ regInProgress: false, showSuccessAlert: false, showFailureAlert: true })
     }
 }
 
-function validateRequiredFields(userData) {
+function validateRequiredFields(userData, setFailureMsg) {
     if (userData.username == "" || userData.email == "" || userData.password == "") {
+        setFailureMsg("Please fill all the required fields!")
         return false;
+    }
+
+    if (!(/\S+@\S+\.\S+/).test(userData.email)) {
+        setFailureMsg("Please enter a valid email address!")
+        return false;
+    }
+
+    if (!(/^[a-z0-9]+$/i).test(userData.username)) {
+        setFailureMsg("Please enter a valid username!");
+        return false
     }
 
     return true;

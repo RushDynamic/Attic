@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
     },
     header_logo: {
-        height: '20vh',
+        height: '25vh',
         paddingRight: '2vh'
     },
 
