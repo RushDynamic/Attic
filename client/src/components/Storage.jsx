@@ -7,6 +7,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import useStyles from "../styles.js";
 import StorageCard from './StorageCard.jsx';
 import { UserContext } from './UserContext.jsx';
+import { createNote, deleteNote, fetchNotes, updateNote } from '../services/storage-service.js';
 import { ATTIC_CONSTANTS, SERVER_ENDPOINTS } from '../constants/attic-constants.js'
 
 function Alert(props) {
@@ -31,73 +32,76 @@ function Storage() {
     // TODO: Find better way to call fetchPosts()
     useEffect(() => {
         if (user.accessToken != null) {
-            fetchPosts();
+            handleFetchNotes();
         }
     }, [user]);
 
     // TODO: Move actual logic for create, update and delete to service classes
     // TODO:Handle 403 errors for update and delete
     function handleDeleteStorage(_id) {
-        fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.DELETE_NOTE}` + _id, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${user.accessToken}`
-            },
-            credentials: 'include'
-        }).then(() => {
-            console.log("Finished delete request");
-            const filteredSampleData = sampleData.filter(data => data._id !== _id);
-            console.log(filteredSampleData);
-            setSampleData(filteredSampleData);
+        deleteNote(_id, user).then((result) => {
+            if (result) {
+                console.log("Finished delete request");
+                const filteredSampleData = sampleData.filter(data => data._id !== _id);
+                console.log(filteredSampleData);
+                setSampleData(filteredSampleData);
+            }
+            else {
+                console.log("Could not delete note");
+                // show error alert
+            }
         });
     }
 
     function handleUpdateStorage(_id, _newData) {
-        fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.UPDATE_NOTE}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.accessToken}`
-            },
-            credentials: 'include',
-            body: JSON.stringify({
-                id: _id,
-                note_title: _newData.title,
-                note_body: _newData.body,
-                last_edited: _newData.edited
-            })
-        }).then(() => {
-            console.log("Finished update request");
+        updateNote(_id, _newData, user).then((result) => {
+            if (result) {
+                console.log("Finished update request");
+            }
+            else {
+                // show error alert
+            }
         })
     }
 
     function handleCreateNote() {
-        fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.CREATE_NOTE}`, {
-            method: "POST",
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.accessToken}`
-            },
-            body: JSON.stringify({
-                username: user.username,
-                note_title: currentData.title,
-                note_body: currentData.body,
-                last_edited: currentData.edited
-            })
+        createNote(currentData, user).then((result) => {
+            if (result) {
+                handleFetchNotes();
+                setExpandNewNote(!expandNewNote);
+                setCurrentData({ title: "", body: "", edited: "" });
+            }
+            else {
+                // show an unsuccessful alert
+            }
+        });
+    }
+
+    function handleFetchNotes() {
+        fetchNotes(user).then((response) => {
+            if (response.status === 200) {
+                return response.json();
+            }
+            else if (response.status === 403) {
+                history.push('/login')
+            }
+            else return null;
         })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.success) {
-                    // show a successful alert
-                    fetchPosts();
-                    setExpandNewNote(!expandNewNote);
-                    setCurrentData({ title: "", body: "", edited: "" });
+            .then(fetchedContent => {
+                if (fetchedContent != null) {
+                    console.log(fetchedContent);
+                    setSampleData(fetchedContent);
+                    setLoaded(true);
                 }
                 else {
-                    // show an unsuccessful alert
+                    setLoaded(true);
+                    setSampleData([]);
                 }
             })
+            .catch((err) => {
+                console.log(err);
+                setLoaded(false);
+            });
     }
 
     function checkLoginStatus() {
@@ -121,41 +125,6 @@ function Storage() {
             })
     }
 
-    function fetchPosts() {
-        fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.FETCH_NOTES}`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${user.accessToken}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username: user.username }),
-            credentials: 'include'
-        })
-            .then(res => {
-                if (res.status === 200) {
-                    return res.json();
-                }
-                else if (res.status === 403) {
-                    history.push('/login')
-                }
-                else return null;
-            })
-            .then(fetchedContent => {
-                if (fetchedContent != null) {
-                    console.log(fetchedContent);
-                    setSampleData(fetchedContent);
-                    setLoaded(true);
-                }
-                else {
-                    setLoaded(true);
-                    setSampleData([]);
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-                setLoaded(false);
-            });
-    }
     return (
         <Container>
             <div className={classes.newNoteContainer}>
