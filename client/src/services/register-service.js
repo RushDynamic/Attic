@@ -1,7 +1,9 @@
+import { ATTIC_CONSTANTS, SERVER_ENDPOINTS } from '../constants/attic-constants.js'
+
 export function registerUser(userData, setRegState, setUser, setFailureMsg) {
     setRegState({ regInProgress: true, showSuccessAlert: false, showFailureAlert: false });
     if (validateRequiredFields(userData, setFailureMsg)) {
-        fetch("http://localhost:3001/account/register", {
+        fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.REGISTER}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userData),

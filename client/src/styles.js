@@ -1,11 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
-    container: {
-        backgroundColor: theme.palette.background.default,
-        padding: theme.spacing(8, 0, 6)
-    },
-
+const useStyles = makeStyles({
     // Header properties
     header_container: {
         display: 'flex',
@@ -120,6 +115,6 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         color: 'black'
     }
-}));
+}, { index: 1 });
 
 export default useStyles;

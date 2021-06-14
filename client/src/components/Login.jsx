@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import useStyles from "../styles.js";
-import { useHistory } from 'react-router-dom';
-import { Typography, TextField, Container, Card, Grid, CardContent, Button, Box } from "@material-ui/core";
-import { Snackbar } from '@material-ui/core';
+import { useHistory, Link } from 'react-router-dom';
+import { Typography, TextField, Container, Card, Grid, CardContent, Button, Box, Snackbar } from "@material-ui/core";
 import MuiAlert from '@material-ui/lab/Alert';
-import { Link } from 'react-router-dom'
-import { loginUser } from './services/login-service.js';
+import { loginUser } from '../services/login-service.js';
 import { UserContext } from "./UserContext.jsx";
+import { ATTIC_CONSTANTS, SERVER_ENDPOINTS } from '../constants/attic-constants.js'
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -42,7 +41,7 @@ function Login() {
     }, [loginState.loginStatus])
 
     function checkLoginStatus() {
-        fetch("http://localhost:3001/account/logged_in", {
+        fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.LOGGED_IN}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${user.accessToken}`

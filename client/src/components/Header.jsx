@@ -6,6 +6,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import LockIcon from '@material-ui/icons/Lock';
 import useStyles from "../styles.js";
 import { UserContext } from "./UserContext.jsx";
+import { ATTIC_CONSTANTS, SERVER_ENDPOINTS } from '../constants/attic-constants.js'
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -16,8 +17,9 @@ function Header() {
     const { user, setUser } = useContext(UserContext);
     const { showLogoutError, setShowLogoutError } = useState(false);
 
+    // TODO: Push this into login-service
     const logout = () => {
-        fetch("http://localhost:3001/account/logout/", {
+        fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.LOGOUT}`, {
             method: 'POST',
             credentials: 'include',
             headers: {

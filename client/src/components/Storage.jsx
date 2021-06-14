@@ -7,6 +7,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import useStyles from "../styles.js";
 import StorageCard from './StorageCard.jsx';
 import { UserContext } from './UserContext.jsx';
+import { ATTIC_CONSTANTS, SERVER_ENDPOINTS } from '../constants/attic-constants.js'
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -23,6 +24,7 @@ function Storage() {
     const classes = useStyles();
 
     useEffect(() => {
+        console.log(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.UPDATE_NOTE}`);
         checkLoginStatus();
     }, []);
 
@@ -36,7 +38,7 @@ function Storage() {
     // TODO: Move actual logic for create, update and delete to service classes
     // TODO:Handle 403 errors for update and delete
     function handleDeleteStorage(_id) {
-        fetch("http://localhost:3001/storage/delete/" + _id, {
+        fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.DELETE_NOTE}` + _id, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${user.accessToken}`
@@ -51,7 +53,7 @@ function Storage() {
     }
 
     function handleUpdateStorage(_id, _newData) {
-        fetch("http://localhost:3001/storage/update", {
+        fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.UPDATE_NOTE}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -70,7 +72,7 @@ function Storage() {
     }
 
     function handleCreateNote() {
-        fetch("http://localhost:3001/storage/add", {
+        fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.CREATE_NOTE}`, {
             method: "POST",
             credentials: 'include',
             headers: {
@@ -99,7 +101,7 @@ function Storage() {
     }
 
     function checkLoginStatus() {
-        fetch("http://localhost:3001/account/logged_in", {
+        fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.LOGGED_IN}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${user.accessToken}`
@@ -120,7 +122,7 @@ function Storage() {
     }
 
     function fetchPosts() {
-        fetch("http://localhost:3001/storage/fetch", {
+        fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.FETCH_NOTES}`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${user.accessToken}`,

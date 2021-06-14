@@ -1,7 +1,9 @@
+import { ATTIC_CONSTANTS, SERVER_ENDPOINTS } from '../constants/attic-constants.js'
+
 export function loginUser(userData, setLoginState, setUser, setFailureMsg) {
     setLoginState({ loginStatus: false, showAlert: false });
     if (validateRequiredFields(userData)) {
-        fetch("http://localhost:3001/account/login", {
+        fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.LOGIN}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
