@@ -4,6 +4,7 @@ import useStyles from "../styles.js";
 import { Typography, TextField, Container, Card, Grid, CardContent, Button, Box, Snackbar } from "@material-ui/core";
 import MuiAlert from '@material-ui/lab/Alert';
 import { registerUser } from '../services/register-service.js';
+import { checkLoginStatus } from '../services/login-service.js';
 import { UserContext } from "./UserContext.jsx";
 import { ATTIC_CONSTANTS, SERVER_ENDPOINTS } from '../constants/attic-constants.js';
 
@@ -28,27 +29,17 @@ function Register() {
 
     useEffect(() => {
         // Invoke backend and check if stored jwt refresh token is valid
-        checkLoginStatus();
+        checkLoginStatusHandler();
     }, [])
 
-    function checkLoginStatus() {
-        fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.LOGGED_IN}`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${user.accessToken}`
-            },
-            credentials: 'include'
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.logged_in === true) {
-                    setUser({ username: data.username, accessToken: data.accessToken });
-                }
-                else {
-                    setUser({ username: null, accessToken: null });
-                    history.push('/register');
-                }
-            })
+    function checkLoginStatusHandler() {
+        checkLoginStatus(user).then((data) => {
+            if (data.logged_in === true) setUser({ username: data.username, accessToken: data.accessToken });
+            else {
+                setUser({ username: null, accessToken: null });
+                history.push('/login');
+            }
+        });
     }
 
     return (

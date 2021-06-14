@@ -16,8 +16,6 @@ export function loginUser(userData, setLoginState, setUser, setFailureMsg) {
                 console.log(result);
                 if (result.authenticated) {
                     console.log("Authenticated user!");
-                    // localStorage.setItem("jwt_authorization", result.accessToken)
-                    // localStorage.setItem("logged_in", true);
                     setUser({ username: userData.username, accessToken: result.accessToken })
 
                     setLoginState({ loginStatus: true, showAlert: true });
@@ -39,7 +37,33 @@ export function loginUser(userData, setLoginState, setUser, setFailureMsg) {
         setFailureMsg("Please fill all the required fields!")
         setLoginState({ loginStatus: false, showAlert: true });
     }
+}
 
+export async function logoutUser(user) {
+    const response = await fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.LOGOUT}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Authorization': `Bearer ${user.accessToken}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username: user.username })
+    });
+
+    const data = await response.json();
+    return data.success;
+}
+
+export async function checkLoginStatus(user) {
+    const response = await fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.LOGGED_IN}`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${user.accessToken}`
+        },
+        credentials: 'include'
+    });
+
+    return await response.json();
 }
 
 function validateRequiredFields(userData) {

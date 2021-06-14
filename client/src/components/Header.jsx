@@ -6,7 +6,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import LockIcon from '@material-ui/icons/Lock';
 import useStyles from "../styles.js";
 import { UserContext } from "./UserContext.jsx";
-import { ATTIC_CONSTANTS, SERVER_ENDPOINTS } from '../constants/attic-constants.js';
+import { logoutUser } from "../services/login-service.js";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -18,27 +18,16 @@ function Header() {
     const { showLogoutError, setShowLogoutError } = useState(false);
 
     // TODO: Push this into login-service
-    const logout = () => {
-        fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.LOGOUT}`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Authorization': `Bearer ${user.accessToken}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username: user.username })
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.success === true) {
-                    history.push('/login');
-                    setUser({ username: null, accessToken: null });
-                }
-                else {
-                    setShowLogoutError(true);
-                }
-            })
-            .catch((err) => { });
+    const handleLogout = () => {
+        logoutUser(user).then((result) => {
+            if (result) {
+                setUser({ username: null, accessToken: null });
+                history.push('/login');
+            }
+            else {
+                setShowLogoutError(true);
+            }
+        });
     }
 
     const classes = useStyles();
@@ -47,7 +36,7 @@ function Header() {
             <header className={classes.header_container}>
                 <img className={classes.header_logo} src={process.env.PUBLIC_URL + '/img/Attic-Header.png'} alt="header_logo" />
                 {(user.username != null)
-                    ? (<Tooltip title={`Logout: ${user.username}`} aria-label="locked"><IconButton className={classes.btnLogout} onClick={() => logout()} >
+                    ? (<Tooltip title={`Logout: ${user.username}`} aria-label="locked"><IconButton className={classes.btnLogout} onClick={() => handleLogout()} >
                         <ExitToAppIcon />
                     </IconButton></Tooltip>)
                     : (<Tooltip title="You're not logged in" aria-label="locked"><LockIcon /></Tooltip>)}

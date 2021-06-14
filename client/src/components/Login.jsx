@@ -3,7 +3,7 @@ import useStyles from "../styles.js";
 import { useHistory, Link } from 'react-router-dom';
 import { Typography, TextField, Container, Card, Grid, CardContent, Button, Box, Snackbar } from "@material-ui/core";
 import MuiAlert from '@material-ui/lab/Alert';
-import { loginUser } from '../services/login-service.js';
+import { loginUser, checkLoginStatus } from '../services/login-service.js';
 import { UserContext } from "./UserContext.jsx";
 import { ATTIC_CONSTANTS, SERVER_ENDPOINTS } from '../constants/attic-constants.js';
 
@@ -22,7 +22,7 @@ function Login() {
 
     useEffect(() => {
         // Invoke backend and check if stored jwt refresh token is valid
-        checkLoginStatus();
+        checkLoginStatusHandler();
     }, [])
 
     useEffect(() => {
@@ -40,24 +40,14 @@ function Login() {
         }
     }, [loginState.loginStatus])
 
-    function checkLoginStatus() {
-        fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.LOGGED_IN}`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${user.accessToken}`
-            },
-            credentials: 'include'
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.logged_in === true) {
-                    setUser({ username: data.username, accessToken: data.accessToken });
-                }
-                else {
-                    setUser({ username: null, accessToken: null });
-                    history.push('/login');
-                }
-            })
+    function checkLoginStatusHandler() {
+        checkLoginStatus(user).then((data) => {
+            if (data.logged_in === true) setUser({ username: data.username, accessToken: data.accessToken });
+            else {
+                setUser({ username: null, accessToken: null });
+                history.push('/login');
+            }
+        });
     }
 
     return (

@@ -8,6 +8,7 @@ import useStyles from "../styles.js";
 import StorageCard from './StorageCard.jsx';
 import { UserContext } from './UserContext.jsx';
 import { createNote, deleteNote, fetchNotes, updateNote } from '../services/storage-service.js';
+import { checkLoginStatus } from '../services/login-service.js';
 import { ATTIC_CONSTANTS, SERVER_ENDPOINTS } from '../constants/attic-constants.js';
 
 function Alert(props) {
@@ -26,7 +27,7 @@ function Storage() {
 
     useEffect(() => {
         console.log(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.UPDATE_NOTE}`);
-        checkLoginStatus();
+        checkLoginStatusHandler();
     }, []);
 
     // TODO: Find better way to call fetchPosts()
@@ -104,25 +105,14 @@ function Storage() {
             });
     }
 
-    function checkLoginStatus() {
-        fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.LOGGED_IN}`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${user.accessToken}`
-            },
-            credentials: 'include'
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.logged_in === true) {
-                    setUser({ username: data.username, accessToken: data.accessToken });
-                    setShowLoggedInAlert(true);
-                }
-                else {
-                    setUser({ username: null, accessToken: null });
-                    history.push('/login');
-                }
-            })
+    function checkLoginStatusHandler() {
+        checkLoginStatus(user).then((data) => {
+            if (data.logged_in === true) setUser({ username: data.username, accessToken: data.accessToken });
+            else {
+                setUser({ username: null, accessToken: null });
+                history.push('/login');
+            }
+        });
     }
 
     return (
