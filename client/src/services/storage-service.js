@@ -1,4 +1,4 @@
-import { ATTIC_CONSTANTS, SERVER_ENDPOINTS } from '../constants/attic-constants.js'
+import { ATTIC_CONSTANTS, SERVER_ENDPOINTS } from '../constants/attic-constants.js';
 
 export async function deleteNote(_id, user) {
     const response = await fetch(`${ATTIC_CONSTANTS.BASE_URI}${SERVER_ENDPOINTS.DELETE_NOTE}` + _id, {

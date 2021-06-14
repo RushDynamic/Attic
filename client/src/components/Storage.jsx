@@ -8,7 +8,7 @@ import useStyles from "../styles.js";
 import StorageCard from './StorageCard.jsx';
 import { UserContext } from './UserContext.jsx';
 import { createNote, deleteNote, fetchNotes, updateNote } from '../services/storage-service.js';
-import { ATTIC_CONSTANTS, SERVER_ENDPOINTS } from '../constants/attic-constants.js'
+import { ATTIC_CONSTANTS, SERVER_ENDPOINTS } from '../constants/attic-constants.js';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;

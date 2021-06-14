@@ -5,7 +5,7 @@ import { Typography, TextField, Container, Card, Grid, CardContent, Button, Box,
 import MuiAlert from '@material-ui/lab/Alert';
 import { loginUser } from '../services/login-service.js';
 import { UserContext } from "./UserContext.jsx";
-import { ATTIC_CONSTANTS, SERVER_ENDPOINTS } from '../constants/attic-constants.js'
+import { ATTIC_CONSTANTS, SERVER_ENDPOINTS } from '../constants/attic-constants.js';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;

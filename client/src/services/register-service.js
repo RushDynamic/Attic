@@ -1,4 +1,4 @@
-import { ATTIC_CONSTANTS, SERVER_ENDPOINTS } from '../constants/attic-constants.js'
+import { ATTIC_CONSTANTS, SERVER_ENDPOINTS } from '../constants/attic-constants.js';
 
 export function registerUser(userData, setRegState, setUser, setFailureMsg) {
     setRegState({ regInProgress: true, showSuccessAlert: false, showFailureAlert: false });
